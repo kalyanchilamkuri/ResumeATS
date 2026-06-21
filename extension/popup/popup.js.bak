@@ -244,15 +244,9 @@
       els.savedTargetProject.textContent = currentProjectId ? formatProjectPill(currentProjectId) : 'Project loading…';
     }
 
-    if (els.savedTargetTitle) {
-      els.savedTargetTitle.textContent = hasSaved && jobTitle ? jobTitle : 'No saved role yet';
-    }
-    if (els.savedTargetSummary) {
-      els.savedTargetSummary.textContent = formatJobSummary(jobTitle, jobDescription);
-    }
-    if (els.emptyStatus) {
-      els.emptyStatus.textContent = hasSaved ? 'Saved target loaded' : 'Ready to configure';
-    }
+    els.savedTargetTitle.textContent = hasSaved && jobTitle ? jobTitle : 'No saved role yet';
+    els.savedTargetSummary.textContent = formatJobSummary(jobTitle, jobDescription);
+    els.emptyStatus.textContent = hasSaved ? 'Saved target loaded' : 'Ready to configure';
   };
 
   const getCachedKeys = () => {
@@ -607,11 +601,9 @@
     }
 
     lastAction = startScoringFlow;
-    if (els.loadingCopy) {
-      els.loadingCopy.textContent = currentJobTitle
-        ? `Analyzing ${currentJobTitle} against the current resume…`
-        : 'Analyzing your resume against the saved job description…';
-    }
+    els.loadingCopy.textContent = currentJobTitle
+      ? `Analyzing ${currentJobTitle} against the current resume…`
+      : 'Analyzing your resume against the saved job description…';
     showView('loading');
 
     try {

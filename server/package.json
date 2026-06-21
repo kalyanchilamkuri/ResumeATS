@@ -1,0 +1,23 @@
+{
+  "name": "resumeatsx-server",
+  "version": "1.0.0",
+  "description": "ResumeATS-X backend — ATS scoring engine for Overleaf resumes",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "mongodb-memory-server": "^11.2.0",
+    "mongoose": "^8.7.0",
+    "natural": "^8.0.1",
+    "openai": "^6.44.0",
+    "string-similarity": "^4.0.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}

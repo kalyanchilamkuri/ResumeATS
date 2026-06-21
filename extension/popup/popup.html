@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=400" />
+  <title>ResumeATS-X</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+
+  <!-- ============================================================= -->
+  <!-- HEADER (always visible)                                        -->
+  <!-- ============================================================= -->
+  <header class="app-header">
+    <div class="app-logo">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <rect x="3" y="2" width="14" height="20" rx="2" stroke="currentColor" stroke-width="2"/>
+        <path d="M7 7h6M7 11h6M7 15h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="18" cy="18" r="5" fill="var(--accent)" stroke="var(--bg-primary)" stroke-width="2"/>
+        <path d="M16 18l1.5 1.5L20 16" stroke="var(--bg-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="app-name">ResumeATS-X</span>
+    </div>
+  </header>
+
+  <!-- ============================================================= -->
+  <!-- VIEW 1 — Empty State (no job description yet)                  -->
+  <!-- ============================================================= -->
+  <section id="empty-state" class="view">
+    <div class="empty-illustration">
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+        <rect x="12" y="6" width="32" height="44" rx="4" stroke="var(--text-tertiary)" stroke-width="2.5"/>
+        <path d="M20 18h16M20 26h16M20 34h10" stroke="var(--text-tertiary)" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="44" cy="46" r="12" fill="var(--accent-dim)" stroke="var(--accent)" stroke-width="2.5"/>
+        <path d="M40 46h8M44 42v8" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <h2 class="empty-title">No Job Description Yet</h2>
+    <p class="empty-subtitle">
+      Paste the job description you're targeting to get an ATS match score.
+    </p>
+
+    <form id="jd-form" class="jd-form" autocomplete="off">
+      <label for="job-title" class="form-label">Job Title</label>
+      <input
+        type="text"
+        id="job-title"
+        class="form-input"
+        placeholder="e.g. Senior Frontend Engineer"
+        required
+      />
+
+      <label for="job-description" class="form-label">Job Description</label>
+      <textarea
+        id="job-description"
+        class="form-textarea"
+        rows="6"
+        placeholder="Paste the full job description here…"
+        required
+      ></textarea>
+
+      <button type="submit" id="btn-save-score" class="btn btn-primary">
+        <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M22 4L12 14.01l-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Save &amp; Score
+      </button>
+    </form>
+  </section>
+
+  <!-- ============================================================= -->
+  <!-- VIEW 2 — Loading State                                         -->
+  <!-- ============================================================= -->
+  <section id="loading-state" class="view">
+    <div class="loading-content">
+      <div class="loading-ring-container">
+        <div class="skeleton skeleton-circle"></div>
+      </div>
+      <p class="loading-text">Analyzing your resume…</p>
+      <div class="skeleton-bars">
+        <div class="skeleton skeleton-bar" style="width:90%"></div>
+        <div class="skeleton skeleton-bar" style="width:75%"></div>
+        <div class="skeleton skeleton-bar" style="width:85%"></div>
+        <div class="skeleton skeleton-bar" style="width:60%"></div>
+      </div>
+      <div class="skeleton-pills">
+        <div class="skeleton skeleton-pill"></div>
+        <div class="skeleton skeleton-pill"></div>
+        <div class="skeleton skeleton-pill"></div>
+        <div class="skeleton skeleton-pill"></div>
+        <div class="skeleton skeleton-pill"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================= -->
+  <!-- VIEW 3 — Results State                                         -->
+  <!-- ============================================================= -->
+  <section id="results-state" class="view">
+
+    <!-- Header bar -->
+    <div class="results-header">
+      <h2 class="results-title">ATS Match Score</h2>
+      <button id="btn-rescore" class="btn btn-secondary btn-sm" title="Re-score resume">
+        <svg class="btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none">
+          <path d="M1 4v6h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M3.51 15a9 9 0 105.64-11.36L1 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Rescore
+      </button>
+    </div>
+
+    <!-- Composite score ring -->
+    <div class="score-ring-wrapper">
+      <div id="score-ring" class="score-ring">
+        <span id="score-value" class="score-value">0</span>
+        <span class="score-label">/ 100</span>
+      </div>
+    </div>
+
+    <!-- Sub-scores -->
+    <div id="sub-scores" class="sub-scores">
+      <!-- Dynamically populated -->
+    </div>
+
+    <!-- Top Issues -->
+    <div id="issues-section" class="card-section">
+      <h3 class="section-heading">Top Issues</h3>
+      <div id="issues-list" class="issues-list">
+        <!-- Dynamically populated -->
+      </div>
+    </div>
+
+    <!-- Missing Keywords -->
+    <div id="keywords-section" class="card-section">
+      <h3 class="section-heading">Missing Keywords</h3>
+      <div id="keywords-list" class="keywords-list">
+        <!-- Dynamically populated -->
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="results-footer">
+      <button id="btn-edit-jd" class="btn-link">Edit Job Description</button>
+    </div>
+  </section>
+
+  <!-- ============================================================= -->
+  <!-- ERROR State (conditionally shown)                              -->
+  <!-- ============================================================= -->
+  <section id="error-state" class="view">
+    <div class="error-content">
+      <div class="error-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="var(--score-red)" stroke-width="2"/>
+          <path d="M12 8v4M12 16h.01" stroke="var(--score-red)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <p id="error-message" class="error-message">Something went wrong.</p>
+      <button id="btn-try-again" class="btn btn-primary">Try Again</button>
+    </div>
+  </section>
+
+  <script src="popup.js"></script>
+</body>
+</html>
